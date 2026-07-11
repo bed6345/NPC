@@ -1,0 +1,31 @@
+{
+ "format_version": "1.10.0",
+ "minecraft:client_entity": {
+  "description": {
+   "identifier": "npcp:pirate",
+   "materials": {
+    "default": "entity_alphatest"
+   },
+   "textures": {
+    "default": "textures/entity/npcp_pirate"
+   },
+   "geometry": {
+    "default": "geometry.npcp_pirate"
+   },
+   "render_controllers": [
+    "controller.render.npcp_npc"
+   ],
+   "animations": {
+    "idle": "animation.npcp_pirate.idle",
+    "alone": "animation.npcp_pirate.alone",
+    "greet": "animation.npcp_pirate.greet",
+    "fidget": "animation.npcp_pirate.fidget"
+   },
+   "scripts": {
+    "animate": [
+     "idle"
+    ]
+   }
+  }
+ }
+}

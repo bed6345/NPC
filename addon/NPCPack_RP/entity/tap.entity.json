@@ -1,0 +1,20 @@
+{
+ "format_version": "1.10.0",
+ "minecraft:client_entity": {
+  "description": {
+   "identifier": "npcp:tap",
+   "materials": {
+    "default": "entity_alphatest"
+   },
+   "textures": {
+    "default": "textures/entity/npcp_tap"
+   },
+   "geometry": {
+    "default": "geometry.npcp_tap"
+   },
+   "render_controllers": [
+    "controller.render.npcp_npc"
+   ]
+  }
+ }
+}

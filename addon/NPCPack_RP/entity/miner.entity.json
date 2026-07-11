@@ -1,0 +1,31 @@
+{
+ "format_version": "1.10.0",
+ "minecraft:client_entity": {
+  "description": {
+   "identifier": "npcp:miner",
+   "materials": {
+    "default": "entity_alphatest"
+   },
+   "textures": {
+    "default": "textures/entity/npcp_miner"
+   },
+   "geometry": {
+    "default": "geometry.npcp_miner"
+   },
+   "render_controllers": [
+    "controller.render.npcp_npc"
+   ],
+   "animations": {
+    "idle": "animation.npcp_miner.idle",
+    "alone": "animation.npcp_miner.alone",
+    "greet": "animation.npcp_miner.greet",
+    "fidget": "animation.npcp_miner.fidget"
+   },
+   "scripts": {
+    "animate": [
+     "idle"
+    ]
+   }
+  }
+ }
+}

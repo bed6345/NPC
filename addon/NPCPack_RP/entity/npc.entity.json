@@ -1,0 +1,24 @@
+{
+    "format_version": "1.10.0",
+    "minecraft:client_entity": {
+        "description": {
+            "identifier": "npcp:npc",
+            "materials": {
+                "default": "entity_alphatest"
+            },
+            "textures": {
+                "default": "textures/entity/npcp_npc"
+            },
+            "geometry": {
+                "default": "geometry.npcp_npc"
+            },
+            "animations": {
+                "look_at_target": "animation.npcp_npc.look_at_target"
+            },
+            "scripts": {
+                "animate": ["look_at_target"]
+            },
+            "render_controllers": ["controller.render.npcp_npc"]
+        }
+    }
+}

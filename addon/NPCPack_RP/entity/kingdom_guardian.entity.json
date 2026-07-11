@@ -1,0 +1,31 @@
+{
+ "format_version": "1.10.0",
+ "minecraft:client_entity": {
+  "description": {
+   "identifier": "npcp:kingdom_guardian",
+   "materials": {
+    "default": "entity_alphatest"
+   },
+   "textures": {
+    "default": "textures/entity/npcp_kingdom_guardian"
+   },
+   "geometry": {
+    "default": "geometry.npcp_kingdom_guardian"
+   },
+   "render_controllers": [
+    "controller.render.npcp_npc"
+   ],
+   "animations": {
+    "alone": "animation.npcp_kingdom_guardian.alone",
+    "alone2": "animation.npcp_kingdom_guardian.alone2",
+    "interaction": "animation.npcp_kingdom_guardian.interaction",
+    "alone3": "animation.npcp_kingdom_guardian.alone3"
+   },
+   "scripts": {
+    "animate": [
+     "alone"
+    ]
+   }
+  }
+ }
+}

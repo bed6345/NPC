@@ -1,0 +1,72 @@
+{
+ "format_version": "1.19.30",
+ "minecraft:entity": {
+  "description": {
+   "identifier": "npcp:adventurer",
+   "is_spawnable": true,
+   "is_summonable": true,
+   "is_experimental": false
+  },
+  "component_groups": {
+   "kill": {
+    "minecraft:instant_despawn": {}
+   }
+  },
+  "components": {
+   "minecraft:type_family": {
+    "family": [
+     "npc",
+     "mob"
+    ]
+   },
+   "minecraft:fire_immune": true,
+   "minecraft:health": {
+    "value": 999999,
+    "min": 1
+   },
+   "minecraft:movement": {
+    "value": 0
+   },
+   "minecraft:movement.basic": {},
+   "minecraft:navigation.generic": {},
+   "minecraft:knockback_resistance": {
+    "value": 1
+   },
+   "minecraft:pushable": {
+    "is_pushable": false,
+    "is_pushable_by_piston": false
+   },
+   "minecraft:persistent": {},
+   "minecraft:collision_box": {
+    "width": 0.6,
+    "height": 1.9
+   },
+   "minecraft:behavior.look_at_player": {
+    "priority": 9,
+    "look_distance": 8,
+    "probability": 0.02
+   },
+   "minecraft:nameable": {
+    "always_show": true,
+    "allow_name_tag_renaming": false
+   },
+   "minecraft:interact": {
+    "interactions": [
+     {
+      "swing": true
+     }
+    ]
+   },
+   "minecraft:physics": {}
+  },
+  "events": {
+   "kill": {
+    "add": {
+     "component_groups": [
+      "kill"
+     ]
+    }
+   }
+  }
+ }
+}

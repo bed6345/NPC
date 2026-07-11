@@ -1,0 +1,30 @@
+{
+ "format_version": "1.10.0",
+ "minecraft:client_entity": {
+  "description": {
+   "identifier": "npcp:dworf",
+   "materials": {
+    "default": "entity_alphatest"
+   },
+   "textures": {
+    "default": "textures/entity/npcp_dworf"
+   },
+   "geometry": {
+    "default": "geometry.npcp_dworf"
+   },
+   "render_controllers": [
+    "controller.render.npcp_npc"
+   ],
+   "animations": {
+    "alone": "animation.npcp_dworf.alone",
+    "hi": "animation.npcp_dworf.hi",
+    "alone2": "animation.npcp_dworf.alone2"
+   },
+   "scripts": {
+    "animate": [
+     "alone"
+    ]
+   }
+  }
+ }
+}

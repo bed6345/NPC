@@ -1,0 +1,20 @@
+{
+ "format_version": "1.10.0",
+ "minecraft:client_entity": {
+  "description": {
+   "identifier": "npcp:npcgreeting",
+   "materials": {
+    "default": "entity_alphatest"
+   },
+   "textures": {
+    "default": "textures/entity/npcp_npcgreeting"
+   },
+   "geometry": {
+    "default": "geometry.npcp_npcgreeting"
+   },
+   "render_controllers": [
+    "controller.render.npcp_npc"
+   ]
+  }
+ }
+}

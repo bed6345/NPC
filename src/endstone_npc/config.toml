@@ -1,0 +1,14 @@
+# ค่าเริ่มต้นของ run_as เมื่อผูก command โดยไม่ใส่ prefix "console:" หรือ "player:"
+# console = รันในนาม server console, player = รันในนามผู้เล่นที่คลิก
+default_run_as = "console"
+
+# ความถี่ (หน่วย tick, 20 tick = 1 วินาที) ที่ปลั๊กอินเช็คตำแหน่ง NPC
+# เพื่อดึงกลับที่เดิม และเกิดใหม่ (respawn) ถ้าตัว NPC หายไป
+freeze_interval_ticks = 20
+
+# กันการคลิกรัว/event ยิงซ้ำ: เวลาขั้นต่ำ (วินาที) ระหว่างการโต้ตอบ NPC
+# ของผู้เล่นคนเดิม
+interact_cooldown = 0.5
+
+# log การคลิก/ตี NPC ลง console (ไว้ไล่ปัญหา) — เปิดเฉพาะตอนหาสาเหตุ
+debug = false

@@ -1,0 +1,31 @@
+{
+ "format_version": "1.10.0",
+ "minecraft:client_entity": {
+  "description": {
+   "identifier": "npcp:king",
+   "materials": {
+    "default": "entity_alphatest"
+   },
+   "textures": {
+    "default": "textures/entity/npcp_king"
+   },
+   "geometry": {
+    "default": "geometry.npcp_king"
+   },
+   "render_controllers": [
+    "controller.render.npcp_npc"
+   ],
+   "animations": {
+    "idle": "animation.npcp_king.idle",
+    "alone": "animation.npcp_king.alone",
+    "fidget": "animation.npcp_king.fidget",
+    "greet": "animation.npcp_king.greet"
+   },
+   "scripts": {
+    "animate": [
+     "idle"
+    ]
+   }
+  }
+ }
+}

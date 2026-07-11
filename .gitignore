@@ -1,0 +1,9 @@
+# build artifacts
+dist/
+build/
+*.egg-info/
+__pycache__/
+*.pyc
+
+# ไฟล์ zip ชั่วคราวตอน pack addon
+addon/npc_pack.zip

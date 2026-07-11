@@ -1,0 +1,39 @@
+{
+    "format_version": 2,
+    "header": {
+        "name": "NPC Plugin Pack (Behavior)",
+        "description": "Custom NPC entity for endstone-npc-plugin: immortal, immobile, looks at players",
+        "uuid": "3027883a-3b9b-4f42-8419-f378cd4b8007",
+        "version": [
+            1,
+            2,
+            1
+        ],
+        "min_engine_version": [
+            1,
+            19,
+            30
+        ]
+    },
+    "modules": [
+        {
+            "type": "data",
+            "uuid": "647565e5-605a-4bc3-b2c7-2d7d2aacccb5",
+            "version": [
+                1,
+                2,
+                1
+            ]
+        }
+    ],
+    "dependencies": [
+        {
+            "uuid": "f3ac6d21-db6e-41dc-ae09-46210f330b12",
+            "version": [
+                1,
+                2,
+                1
+            ]
+        }
+    ]
+}

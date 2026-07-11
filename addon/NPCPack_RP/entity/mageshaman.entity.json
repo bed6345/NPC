@@ -1,0 +1,30 @@
+{
+ "format_version": "1.10.0",
+ "minecraft:client_entity": {
+  "description": {
+   "identifier": "npcp:mageshaman",
+   "materials": {
+    "default": "entity_alphatest"
+   },
+   "textures": {
+    "default": "textures/entity/npcp_mageshaman"
+   },
+   "geometry": {
+    "default": "geometry.npcp_mageshaman"
+   },
+   "render_controllers": [
+    "controller.render.npcp_npc"
+   ],
+   "animations": {
+    "alone": "animation.npcp_mageshaman.alone",
+    "hi": "animation.npcp_mageshaman.hi",
+    "alone2": "animation.npcp_mageshaman.alone2"
+   },
+   "scripts": {
+    "animate": [
+     "alone"
+    ]
+   }
+  }
+ }
+}

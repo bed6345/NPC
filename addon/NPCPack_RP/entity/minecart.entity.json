@@ -1,0 +1,20 @@
+{
+ "format_version": "1.10.0",
+ "minecraft:client_entity": {
+  "description": {
+   "identifier": "npcp:minecart",
+   "materials": {
+    "default": "entity_alphatest"
+   },
+   "textures": {
+    "default": "textures/entity/npcp_minecart"
+   },
+   "geometry": {
+    "default": "geometry.npcp_minecart"
+   },
+   "render_controllers": [
+    "controller.render.npcp_npc"
+   ]
+  }
+ }
+}

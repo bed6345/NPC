@@ -1,0 +1,31 @@
+{
+ "format_version": "1.10.0",
+ "minecraft:client_entity": {
+  "description": {
+   "identifier": "npcp:adventurer",
+   "materials": {
+    "default": "entity_alphatest"
+   },
+   "textures": {
+    "default": "textures/entity/npcp_adventurer"
+   },
+   "geometry": {
+    "default": "geometry.npcp_adventurer"
+   },
+   "render_controllers": [
+    "controller.render.npcp_npc"
+   ],
+   "animations": {
+    "idle": "animation.npcp_adventurer.idle",
+    "alone": "animation.npcp_adventurer.alone",
+    "greet": "animation.npcp_adventurer.greet",
+    "fidget": "animation.npcp_adventurer.fidget"
+   },
+   "scripts": {
+    "animate": [
+     "idle"
+    ]
+   }
+  }
+ }
+}

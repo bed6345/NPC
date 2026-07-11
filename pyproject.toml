@@ -1,0 +1,22 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "endstone-npc-plugin"
+version = "1.1.4"
+description = "Citizens-like NPC plugin for Endstone (Bedrock Dedicated Server)"
+readme = "README.md"
+requires-python = ">=3.9"
+keywords = ["endstone", "minecraft", "bedrock", "npc", "citizens"]
+dependencies = [
+    "endstone>=0.11,<0.12",
+]
+
+# จุดสำคัญ: Endstone ค้นหาปลั๊กอิน Python ผ่าน entry point กลุ่ม "endstone"
+# (Python plugin ไม่ใช้ plugin.toml — อันนั้นสำหรับ C++ plugin เท่านั้น)
+[project.entry-points."endstone"]
+npc_plugin = "endstone_npc:NPCPlugin"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/endstone_npc"]

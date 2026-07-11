@@ -1,0 +1,29 @@
+{
+    "format_version": 2,
+    "header": {
+        "name": "NPC Plugin Pack (Resource)",
+        "description": "Visuals for the endstone-npc-plugin custom NPC entity",
+        "uuid": "f3ac6d21-db6e-41dc-ae09-46210f330b12",
+        "version": [
+            1,
+            2,
+            1
+        ],
+        "min_engine_version": [
+            1,
+            19,
+            30
+        ]
+    },
+    "modules": [
+        {
+            "type": "resources",
+            "uuid": "27ed4631-ced0-40c6-9313-b70711f00768",
+            "version": [
+                1,
+                2,
+                1
+            ]
+        }
+    ]
+}

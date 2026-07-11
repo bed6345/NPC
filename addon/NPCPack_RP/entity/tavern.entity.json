@@ -1,0 +1,31 @@
+{
+ "format_version": "1.10.0",
+ "minecraft:client_entity": {
+  "description": {
+   "identifier": "npcp:tavern",
+   "materials": {
+    "default": "entity_alphatest"
+   },
+   "textures": {
+    "default": "textures/entity/npcp_tavern"
+   },
+   "geometry": {
+    "default": "geometry.npcp_tavern"
+   },
+   "render_controllers": [
+    "controller.render.npcp_npc"
+   ],
+   "animations": {
+    "idle": "animation.npcp_tavern.idle",
+    "alone": "animation.npcp_tavern.alone",
+    "greet": "animation.npcp_tavern.greet",
+    "fidget": "animation.npcp_tavern.fidget"
+   },
+   "scripts": {
+    "animate": [
+     "idle"
+    ]
+   }
+  }
+ }
+}
