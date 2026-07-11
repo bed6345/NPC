@@ -1,0 +1,31 @@
+{
+ "format_version": "1.10.0",
+ "minecraft:client_entity": {
+  "description": {
+   "identifier": "npcp:wizard",
+   "materials": {
+    "default": "entity_alphatest"
+   },
+   "textures": {
+    "default": "textures/entity/npcp_wizard"
+   },
+   "geometry": {
+    "default": "geometry.npcp_wizard"
+   },
+   "render_controllers": [
+    "controller.render.npcp_npc"
+   ],
+   "animations": {
+    "idle": "animation.npcp_wizard.idle",
+    "alone": "animation.npcp_wizard.alone",
+    "fidget": "animation.npcp_wizard.fidget",
+    "greet": "animation.npcp_wizard.greet"
+   },
+   "scripts": {
+    "animate": [
+     "idle"
+    ]
+   }
+  }
+ }
+}

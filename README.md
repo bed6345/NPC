@@ -110,11 +110,11 @@ placeholder `{player}` จะถูกแทนด้วยชื่อผู้
    `addon/NPCPack_RP` ไปที่ `development_resource_packs/` ของ server
 2. เพิ่มในไฟล์ `worlds/<ชื่อโลก>/world_behavior_packs.json`:
    ```json
-   [{"pack_id": "3027883a-3b9b-4f42-8419-f378cd4b8007", "version": [1, 2, 1]}]
+   [{"pack_id": "3027883a-3b9b-4f42-8419-f378cd4b8007", "version": [1, 3, 0]}]
    ```
    และ `worlds/<ชื่อโลก>/world_resource_packs.json`:
    ```json
-   [{"pack_id": "f3ac6d21-db6e-41dc-ae09-46210f330b12", "version": [1, 2, 1]}]
+   [{"pack_id": "f3ac6d21-db6e-41dc-ae09-46210f330b12", "version": [1, 3, 0]}]
    ```
 3. เปิดให้ client โหลด pack จาก server: ใน `server.properties` ตั้ง
    `texturepack-required=true` (ไม่ตั้งก็ได้ แต่ผู้เล่นต้อง import

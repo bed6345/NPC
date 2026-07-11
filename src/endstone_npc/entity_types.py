@@ -14,9 +14,12 @@ import difflib
 # cnpc = ชาวบ้านโมเดลพื้นฐาน ที่เหลือคือโมเดลที่แปลงมาจาก Blockbench (java_npc)
 ADDON_TYPES = [
     "cnpc",
-    "adventurer", "anchor", "dworf", "farmermaxvers", "king", "kingdom_guardian",
-    "lootbag", "mageshaman", "minecart", "miner", "npcgreeting", "pirate",
-    "tap", "tavern", "throne",
+    "adventurer", "anchor", "archer", "blacksmith", "butcher", "dworf",
+    "farmer", "farmermaxvers", "guard", "guardcyan", "guardgreen",
+    "guardorange", "guardparts", "guardpink", "guardpurple", "guardred",
+    "guardyellow", "king", "kingdom_guardian", "lootbag", "mageshaman",
+    "minecart", "miner", "npcgreeting", "pirate", "tap", "tavern",
+    "throne", "wizard",
 ]
 
 # identifier จริงของ Bedrock (ไม่ใส่ prefix minecraft:)

@@ -1,0 +1,33 @@
+{
+ "format_version": "1.10.0",
+ "minecraft:client_entity": {
+  "description": {
+   "identifier": "npcp:guardred",
+   "materials": {
+    "default": "entity_alphatest"
+   },
+   "textures": {
+    "default": "textures/entity/npcp_guardred"
+   },
+   "geometry": {
+    "default": "geometry.npcp_guardred"
+   },
+   "render_controllers": [
+    "controller.render.npcp_npc"
+   ],
+   "animations": {
+    "torch": "animation.npcp_guardred.torch",
+    "idle": "animation.npcp_guardred.idle",
+    "walk": "animation.npcp_guardred.walk",
+    "grabsword": "animation.npcp_guardred.grabsword",
+    "attack": "animation.npcp_guardred.attack",
+    "grabtorch": "animation.npcp_guardred.grabtorch"
+   },
+   "scripts": {
+    "animate": [
+     "idle"
+    ]
+   }
+  }
+ }
+}

@@ -1,0 +1,31 @@
+{
+ "format_version": "1.10.0",
+ "minecraft:client_entity": {
+  "description": {
+   "identifier": "npcp:farmer",
+   "materials": {
+    "default": "entity_alphatest"
+   },
+   "textures": {
+    "default": "textures/entity/npcp_farmer"
+   },
+   "geometry": {
+    "default": "geometry.npcp_farmer"
+   },
+   "render_controllers": [
+    "controller.render.npcp_npc"
+   ],
+   "animations": {
+    "idle": "animation.npcp_farmer.idle",
+    "fidget": "animation.npcp_farmer.fidget",
+    "greet": "animation.npcp_farmer.greet",
+    "alone": "animation.npcp_farmer.alone"
+   },
+   "scripts": {
+    "animate": [
+     "idle"
+    ]
+   }
+  }
+ }
+}

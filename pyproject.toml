@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "endstone-npc-plugin"
-version = "1.1.4"
+version = "1.2.0"
 description = "Citizens-like NPC plugin for Endstone (Bedrock Dedicated Server)"
 readme = "README.md"
 requires-python = ">=3.9"

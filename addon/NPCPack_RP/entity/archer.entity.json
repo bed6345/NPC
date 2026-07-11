@@ -1,0 +1,31 @@
+{
+ "format_version": "1.10.0",
+ "minecraft:client_entity": {
+  "description": {
+   "identifier": "npcp:archer",
+   "materials": {
+    "default": "entity_alphatest"
+   },
+   "textures": {
+    "default": "textures/entity/npcp_archer"
+   },
+   "geometry": {
+    "default": "geometry.npcp_archer"
+   },
+   "render_controllers": [
+    "controller.render.npcp_npc"
+   ],
+   "animations": {
+    "idle": "animation.npcp_archer.idle",
+    "alone": "animation.npcp_archer.alone",
+    "greet": "animation.npcp_archer.greet",
+    "fidget": "animation.npcp_archer.fidget"
+   },
+   "scripts": {
+    "animate": [
+     "idle"
+    ]
+   }
+  }
+ }
+}

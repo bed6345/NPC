@@ -1,0 +1,33 @@
+{
+ "format_version": "1.10.0",
+ "minecraft:client_entity": {
+  "description": {
+   "identifier": "npcp:guardpink",
+   "materials": {
+    "default": "entity_alphatest"
+   },
+   "textures": {
+    "default": "textures/entity/npcp_guardpink"
+   },
+   "geometry": {
+    "default": "geometry.npcp_guardpink"
+   },
+   "render_controllers": [
+    "controller.render.npcp_npc"
+   ],
+   "animations": {
+    "torch": "animation.npcp_guardpink.torch",
+    "idle": "animation.npcp_guardpink.idle",
+    "walk": "animation.npcp_guardpink.walk",
+    "grabsword": "animation.npcp_guardpink.grabsword",
+    "attack": "animation.npcp_guardpink.attack",
+    "grabtorch": "animation.npcp_guardpink.grabtorch"
+   },
+   "scripts": {
+    "animate": [
+     "idle"
+    ]
+   }
+  }
+ }
+}

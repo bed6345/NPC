@@ -1,0 +1,31 @@
+{
+ "format_version": "1.10.0",
+ "minecraft:client_entity": {
+  "description": {
+   "identifier": "npcp:blacksmith",
+   "materials": {
+    "default": "entity_alphatest"
+   },
+   "textures": {
+    "default": "textures/entity/npcp_blacksmith"
+   },
+   "geometry": {
+    "default": "geometry.npcp_blacksmith"
+   },
+   "render_controllers": [
+    "controller.render.npcp_npc"
+   ],
+   "animations": {
+    "idle": "animation.npcp_blacksmith.idle",
+    "fidget": "animation.npcp_blacksmith.fidget",
+    "alone": "animation.npcp_blacksmith.alone",
+    "greet": "animation.npcp_blacksmith.greet"
+   },
+   "scripts": {
+    "animate": [
+     "idle"
+    ]
+   }
+  }
+ }
+}

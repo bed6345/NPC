@@ -101,7 +101,7 @@ class NPCPlugin(Plugin):
         )
 
         self.logger.info(
-            f"NPCPlugin v1.1.4 เปิดใช้งานแล้ว "
+            f"NPCPlugin v1.2.0 เปิดใช้งานแล้ว "
             f"(NPC ที่บันทึกไว้: {len(self.manager.npcs)} ตัว, debug={self.debug})"
         )
 

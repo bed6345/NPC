@@ -13,9 +13,25 @@ import os
 import re
 import sys
 
-SRC_DIR = sys.argv[1]   # โฟลเดอร์ java_npc/blueprints
-RP_DIR = sys.argv[2]    # NPCPack_RP
-BP_DIR = sys.argv[3]    # NPCPack_BP
+# กัน UnicodeEncodeError เวลา path มีภาษาไทยแล้วคอนโซลเป็น cp1252
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+
+# รันเปล่า ๆ ได้เลย: หาโฟลเดอร์อัตโนมัติจากตำแหน่งสคริปต์ (tools/ อยู่ในโปรเจกต์)
+# หรือระบุเอง: py bbmodel2bedrock.py <โฟลเดอร์ bbmodel> <NPCPack_RP> <NPCPack_BP>
+_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+SRC_DIR = sys.argv[1] if len(sys.argv) > 1 else os.path.join(_ROOT, "java_npc", "blueprints")
+RP_DIR = sys.argv[2] if len(sys.argv) > 2 else os.path.join(_ROOT, "addon", "NPCPack_RP")
+BP_DIR = sys.argv[3] if len(sys.argv) > 3 else os.path.join(_ROOT, "addon", "NPCPack_BP")
+
+for _p, _label in ((SRC_DIR, "bbmodel folder"), (RP_DIR, "NPCPack_RP"), (BP_DIR, "NPCPack_BP")):
+    if not os.path.isdir(_p):
+        print(f"ERROR: not found {_label}: {_p}")
+        print("usage: py bbmodel2bedrock.py [bbmodel_folder] [NPCPack_RP] [NPCPack_BP]")
+        sys.exit(1)
+print("source :", SRC_DIR)
+print("RP     :", RP_DIR)
+print("BP     :", BP_DIR)
 
 BP_TEMPLATE = json.load(open(os.path.join(BP_DIR, "entities", "npc.json"), encoding="utf-8-sig"))
 

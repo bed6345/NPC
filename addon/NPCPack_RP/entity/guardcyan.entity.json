@@ -1,0 +1,33 @@
+{
+ "format_version": "1.10.0",
+ "minecraft:client_entity": {
+  "description": {
+   "identifier": "npcp:guardcyan",
+   "materials": {
+    "default": "entity_alphatest"
+   },
+   "textures": {
+    "default": "textures/entity/npcp_guardcyan"
+   },
+   "geometry": {
+    "default": "geometry.npcp_guardcyan"
+   },
+   "render_controllers": [
+    "controller.render.npcp_npc"
+   ],
+   "animations": {
+    "torch": "animation.npcp_guardcyan.torch",
+    "idle": "animation.npcp_guardcyan.idle",
+    "walk": "animation.npcp_guardcyan.walk",
+    "grabsword": "animation.npcp_guardcyan.grabsword",
+    "attack": "animation.npcp_guardcyan.attack",
+    "grabtorch": "animation.npcp_guardcyan.grabtorch"
+   },
+   "scripts": {
+    "animate": [
+     "idle"
+    ]
+   }
+  }
+ }
+}

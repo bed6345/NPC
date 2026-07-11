@@ -1,0 +1,32 @@
+{
+ "format_version": "1.10.0",
+ "minecraft:client_entity": {
+  "description": {
+   "identifier": "npcp:guardparts",
+   "materials": {
+    "default": "entity_alphatest"
+   },
+   "textures": {
+    "default": "textures/entity/npcp_guardparts"
+   },
+   "geometry": {
+    "default": "geometry.npcp_guardparts"
+   },
+   "render_controllers": [
+    "controller.render.npcp_npc"
+   ],
+   "animations": {
+    "torch": "animation.npcp_guardparts.torch",
+    "idle": "animation.npcp_guardparts.idle",
+    "walk": "animation.npcp_guardparts.walk",
+    "attack": "animation.npcp_guardparts.attack",
+    "grabtorch": "animation.npcp_guardparts.grabtorch"
+   },
+   "scripts": {
+    "animate": [
+     "idle"
+    ]
+   }
+  }
+ }
+}
