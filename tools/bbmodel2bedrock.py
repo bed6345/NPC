@@ -274,6 +274,29 @@ if os.path.isfile(types_file):
         f.write("\n")
     print(f"addon_types.json: +{len(added)} new {added if added else ''}")
 
+    # 1.5) เจน npc_animations.json — สแกน animation ทั้งหมดใน RP
+    #      ปลั๊กอินโหลดไฟล์นี้จาก data folder (plugins/NPCPlugin/)
+    #      ไม่ต้อง rebuild wheel เมื่อเพิ่มโมเดลใหม่
+    anim_map = {}
+    anim_dir = os.path.join(RP_DIR, "animations")
+    for anim_file in sorted(glob.glob(os.path.join(anim_dir, "*.animation.json"))):
+        try:
+            with open(anim_file, encoding="utf-8") as f:
+                data = json.load(f)
+        except (OSError, ValueError):
+            continue
+        for full_name in data.get("animations", {}):
+            parts = full_name.split(".")
+            if len(parts) >= 3 and parts[0] == "animation" and parts[1].startswith("npcp_"):
+                npc_type = parts[1][len("npcp_"):]
+                action = ".".join(parts[2:])
+                anim_map.setdefault(npc_type, []).append(action)
+    anim_json = os.path.join(_ROOT, "npc_animations.json")
+    with open(anim_json, "w", encoding="utf-8") as f:
+        json.dump(anim_map, f, indent=2, ensure_ascii=False)
+        f.write("\n")
+    print(f"npc_animations.json: {len(anim_map)} types -> {anim_json}")
+
     # 2) repack addon/npc_pack.mcaddon (สำหรับแจกผู้เล่น)
     import zipfile
     mcaddon = os.path.join(_ROOT, "addon", "npc_pack.mcaddon")
@@ -297,9 +320,11 @@ if os.path.isfile(types_file):
         whls = sorted(glob.glob(os.path.join(dist, "*.whl")), key=os.path.getmtime)
         print(f"built wheel: {whls[-1] if whls else dist}")
         print("\nขั้นตอนต่อไป:")
-        print("  1. copy wheel ใหม่จาก dist/ ไปวางใน plugins/ ของ server (ลบตัวเก่า)")
-        print("  2. copy addon/NPCPack_BP + NPCPack_RP ทับใน development packs ของ server")
-        print("  3. restart server -> /npc create <ชื่อโมเดลใหม่>")
+        print("  1. copy addon/NPCPack_BP + NPCPack_RP ทับใน development packs ของ server")
+        print("  2. copy npc_animations.json ไปที่ plugins/NPCPlugin/ ของ server")
+        print("  3. ในเกมสั่ง /npc reload (หรือ restart server)")
+        print("  4. /npc create <ชื่อโมเดลใหม่>")
+        print("  * ไม่ต้อง rebuild wheel — ปลั๊กอินอ่าน npc_animations.json จาก data folder")
     else:
         print("build wheel ไม่สำเร็จ — รันเองด้วย: pip wheel . --no-deps -w dist")
 else:

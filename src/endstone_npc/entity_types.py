@@ -84,33 +84,25 @@ def suggest(raw: str, n: int = 3) -> list[str]:
     return difflib.get_close_matches(name, ALL_TYPES + list(ALIASES), n=n, cutoff=0.5)
 
 
-# ชื่อ animation สั้น ๆ ที่แต่ละ NPC จาก addon มี (โหลดจาก animation json)
-NPC_ANIMATIONS: dict[str, list[str]] = {
-    "adventurer": ["idle", "alone", "greet", "fidget"],
-    "archer": ["idle", "alone", "greet", "fidget"],
-    "blacksmith": ["idle", "fidget", "alone", "greet"],
-    "butcher": ["idle", "alone", "fidget", "greet"],
-    "dworf": ["alone", "hi", "alone2"],
-    "farmer": ["idle", "fidget", "greet", "alone"],
-    "farmermaxvers": ["alone", "hi", "alone2"],
-    "guard": ["torch", "idle", "walk", "grabsword", "attack", "grabtorch"],
-    "guardcyan": ["torch", "idle", "walk", "grabsword", "attack", "grabtorch"],
-    "guardgreen": ["torch", "idle", "walk", "grabsword", "attack", "grabtorch"],
-    "guardorange": ["torch", "idle", "walk", "grabsword", "attack", "grabtorch"],
-    "guardparts": ["torch", "idle", "walk", "attack", "grabtorch"],
-    "guardpink": ["torch", "idle", "walk", "grabsword", "attack", "grabtorch"],
-    "guardpurple": ["torch", "idle", "walk", "grabsword", "attack", "grabtorch"],
-    "guardred": ["torch", "idle", "walk", "grabsword", "attack", "grabtorch"],
-    "guardyellow": ["torch", "idle", "walk", "grabsword", "attack", "grabtorch"],
-    "king": ["idle", "alone", "fidget", "greet"],
-    "kingdom_guardian": ["alone", "alone2", "interaction", "alone3"],
-    "mageshaman": ["alone", "hi", "alone2"],
-    "miner": ["idle", "alone", "greet", "fidget"],
-    "npc": ["look_at_target"],
-    "pirate": ["idle", "alone", "greet", "fidget"],
-    "tavern": ["idle", "alone", "greet", "fidget"],
-    "wizard": ["idle", "alone", "fidget", "greet"],
-}
+# ชื่อ animation สั้น ๆ ที่แต่ละ NPC จาก addon มี
+# โหลดจาก npc_animations.json ใน data folder (เจนด้วย tools/bbmodel2bedrock.py)
+# ถ้าไม่มีไฟล์จะใช้ dict ว่าง — ระบบ animation ยังทำงานได้แต่ /npc animations set
+# จะบอกว่าไม่มี animation ให้เลือก
+NPC_ANIMATIONS: dict[str, list[str]] = {}
+
+
+def load_animations(path: str) -> int:
+    """โหลด animation map จากไฟล์ JSON, คืนจำนวน type ที่โหลดได้ (-1 = ไม่พบไฟล์)"""
+    global NPC_ANIMATIONS
+    try:
+        with open(path, encoding="utf-8") as f:
+            data = json.load(f)
+        if isinstance(data, dict):
+            NPC_ANIMATIONS = data
+            return len(data)
+    except (OSError, ValueError):
+        pass
+    return -1
 
 
 def get_npc_short_name(entity_type: str) -> str | None:
