@@ -1,7 +1,22 @@
-"""สร้าง texture 64x64 สำหรับ npcp:npc (layout แบบ skin humanoid มาตรฐาน)"""
+"""สร้าง texture 64x64 สำหรับ npcp:npc (layout แบบ skin humanoid มาตรฐาน)
+
+รันเปล่า ๆ ได้เลย จะเขียนทับ addon/NPCPack_RP/textures/entity/npcp_npc.png
+หรือระบุปลายทางเอง: py make_npc_texture.py <ไฟล์ .png>
+อยากเปลี่ยนสีผม/เสื้อ แก้ค่าสีด้านล่างแล้วรันใหม่
+"""
+import os
 import struct
 import zlib
 import sys
+
+# กัน UnicodeEncodeError เวลา path มีภาษาไทยแล้วคอนโซลเป็น cp1252
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+
+_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+OUT_PATH = sys.argv[1] if len(sys.argv) > 1 else os.path.join(
+    _ROOT, "addon", "NPCPack_RP", "textures", "entity", "npcp_npc.png"
+)
 
 W = H = 64
 SKIN = (240, 200, 160, 255)       # ผิว
@@ -66,6 +81,7 @@ png = (b"\x89PNG\r\n\x1a\n"
        + chunk(b"IDAT", zlib.compress(raw, 9))
        + chunk(b"IEND", b""))
 
-with open(sys.argv[1], "wb") as f:
+os.makedirs(os.path.dirname(OUT_PATH), exist_ok=True)
+with open(OUT_PATH, "wb") as f:
     f.write(png)
-print("wrote", sys.argv[1], len(png), "bytes")
+print("wrote", OUT_PATH, f"({len(png)} bytes)")
