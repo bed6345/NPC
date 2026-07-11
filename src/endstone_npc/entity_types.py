@@ -8,19 +8,19 @@
 from __future__ import annotations
 
 import difflib
+import json
+import os
 
 # entity จาก addon ของปลั๊กอิน (NPCPack) — อมตะ/ยืนนิ่งตั้งแต่ระดับ entity
 # ต้องติดตั้ง addon/NPCPack_BP + NPCPack_RP ในโลกก่อนถึงจะ spawn ได้
-# cnpc = ชาวบ้านโมเดลพื้นฐาน ที่เหลือคือโมเดลที่แปลงมาจาก Blockbench (java_npc)
-ADDON_TYPES = [
-    "cnpc",
-    "adventurer", "anchor", "archer", "blacksmith", "butcher", "dworf",
-    "farmer", "farmermaxvers", "guard", "guardcyan", "guardgreen",
-    "guardorange", "guardparts", "guardpink", "guardpurple", "guardred",
-    "guardyellow", "king", "kingdom_guardian", "lootbag", "mageshaman",
-    "minecart", "miner", "npcgreeting", "pirate", "tap", "tavern",
-    "throne", "wizard",
-]
+# cnpc = ชาวบ้านโมเดลพื้นฐาน ที่เหลือโหลดจาก addon_types.json ซึ่ง
+# tools/bbmodel2bedrock.py เขียนให้อัตโนมัติตอนแปลงโมเดลใหม่
+_ADDON_TYPES_FILE = os.path.join(os.path.dirname(__file__), "addon_types.json")
+try:
+    with open(_ADDON_TYPES_FILE, encoding="utf-8") as _f:
+        ADDON_TYPES = ["cnpc"] + sorted(json.load(_f))
+except (OSError, ValueError):
+    ADDON_TYPES = ["cnpc"]
 
 # identifier จริงของ Bedrock (ไม่ใส่ prefix minecraft:)
 VANILLA_TYPES = [

@@ -254,4 +254,53 @@ for path in sorted(glob.glob(os.path.join(SRC_DIR, "**", "*.bbmodel"), recursive
 
 for r in results:
     print(r)
-print("TYPES:", json.dumps([r[0] for r in results if r[1] != "ERROR"]))
+converted = [r[0] for r in results if r[1] != "ERROR"]
+print(f"converted {len(converted)} models")
+
+# ---------------------------------------------------------------
+# ขั้นตอนอัตโนมัติหลังแปลง (ทำเฉพาะตอนรันในโครงสร้างโปรเจกต์ปกติ)
+# ---------------------------------------------------------------
+
+# 1) ลงทะเบียน type ใหม่เข้าปลั๊กอิน: อัปเดต src/endstone_npc/addon_types.json
+#    (ปลั๊กอินอ่านไฟล์นี้ตอนโหลด — ไม่ต้องแก้โค้ดเอง)
+types_file = os.path.join(_ROOT, "src", "endstone_npc", "addon_types.json")
+if os.path.isfile(types_file):
+    with open(types_file, encoding="utf-8") as f:
+        existing = set(json.load(f))
+    added = sorted(set(converted) - existing)
+    merged = sorted(existing | set(converted))
+    with open(types_file, "w", encoding="utf-8") as f:
+        json.dump(merged, f, indent=4)
+        f.write("\n")
+    print(f"addon_types.json: +{len(added)} new {added if added else ''}")
+
+    # 2) repack addon/npc_pack.mcaddon (สำหรับแจกผู้เล่น)
+    import zipfile
+    mcaddon = os.path.join(_ROOT, "addon", "npc_pack.mcaddon")
+    with zipfile.ZipFile(mcaddon, "w", zipfile.ZIP_DEFLATED) as z:
+        for pack_dir in (BP_DIR, RP_DIR):
+            base = os.path.basename(pack_dir)
+            for root, _dirs, files in os.walk(pack_dir):
+                for fn in files:
+                    full = os.path.join(root, fn)
+                    z.write(full, os.path.join(base, os.path.relpath(full, pack_dir)))
+    print(f"repacked {mcaddon}")
+
+    # 3) build wheel ใหม่ให้เลย (ถ้ามี pip)
+    import subprocess
+    dist = os.path.join(_ROOT, "dist")
+    r = subprocess.run(
+        [sys.executable, "-m", "pip", "wheel", _ROOT, "--no-deps", "-w", dist],
+        capture_output=True, text=True,
+    )
+    if r.returncode == 0:
+        whls = sorted(glob.glob(os.path.join(dist, "*.whl")), key=os.path.getmtime)
+        print(f"built wheel: {whls[-1] if whls else dist}")
+        print("\nขั้นตอนต่อไป:")
+        print("  1. copy wheel ใหม่จาก dist/ ไปวางใน plugins/ ของ server (ลบตัวเก่า)")
+        print("  2. copy addon/NPCPack_BP + NPCPack_RP ทับใน development packs ของ server")
+        print("  3. restart server -> /npc create <ชื่อโมเดลใหม่>")
+    else:
+        print("build wheel ไม่สำเร็จ — รันเองด้วย: pip wheel . --no-deps -w dist")
+else:
+    print("(ข้ามขั้นตอนอัตโนมัติ: ไม่พบ src/endstone_npc/addon_types.json)")
