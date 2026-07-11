@@ -73,6 +73,7 @@ class NPCPlugin(Plugin):
         self.default_run_as = "console"
         self.freeze_interval_ticks = 20
         self.interact_cooldown = 0.5
+        self.look_at_range = 3.0
         self.debug = False  # log การคลิก/ตี NPC เพื่อช่วยไล่ปัญหา (เปิดใน config.toml)
         # กัน PlayerInteractActorEvent ยิงซ้ำ: ชื่อผู้เล่น -> เวลาคลิกล่าสุด
         self._last_interact: dict[str, float] = {}
@@ -118,6 +119,7 @@ class NPCPlugin(Plugin):
             self.default_run_as = run_as if run_as in ("console", "player") else "console"
             self.freeze_interval_ticks = max(1, int(cfg.get("freeze_interval_ticks", 20)))
             self.interact_cooldown = float(cfg.get("interact_cooldown", 0.5))
+            self.look_at_range = max(0.0, float(cfg.get("look_at_range", 3.0)))
             self.debug = bool(cfg.get("debug", False))
         except Exception as e:
             self.logger.warning(f"อ่าน config.toml ไม่ได้ ใช้ค่า default แทน: {e}")

@@ -319,6 +319,10 @@ class NPCManager:
         chunk_cache: dict = {}
         spawned_any = False
 
+        look_range = self.plugin.look_at_range
+        look_range_sq = look_range * look_range
+        players = list(self.plugin.server.online_players) if look_range > 0 else []
+
         for key, record in self.npcs.items():
             npc_id = int(key)
             actor = found.get(npc_id)
@@ -348,9 +352,36 @@ class NPCManager:
                             record["yaw"],
                         )
                     )
-                    actor.set_rotation(record["yaw"], record["pitch"])
                 except Exception:
                     pass
+
+            if players:
+                nearest = None
+                min_dsq = look_range_sq
+                nx, ny, nz = record["x"], record["y"], record["z"]
+                for p in players:
+                    if p.dimension.name != record["dimension"]:
+                        continue
+                    pl = p.location
+                    dsq = (pl.x - nx) ** 2 + (pl.y - ny) ** 2 + (pl.z - nz) ** 2
+                    if dsq < min_dsq:
+                        min_dsq = dsq
+                        nearest = p
+                if nearest is not None:
+                    pl = nearest.location
+                    ldx = pl.x - nx
+                    ldz = pl.z - nz
+                    ldy = pl.y - ny
+                    dist_xz = math.sqrt(ldx * ldx + ldz * ldz)
+                    if dist_xz > 0.01:
+                        actor.set_rotation(
+                            -math.degrees(math.atan2(ldx, ldz)),
+                            -math.degrees(math.atan2(ldy, dist_xz)),
+                        )
+                else:
+                    actor.set_rotation(record["yaw"], record["pitch"])
+            else:
+                actor.set_rotation(record["yaw"], record["pitch"])
 
         # slowness กันเดิน: effect อยู่ได้ 60 วิ จึงยิงซ้ำแค่ทุก 40 รอบ (~40 วิ)
         # แต่ช่วง 3 รอบหลังมีตัว spawn ใหม่จะยิงทุกรอบ เพราะ selector
