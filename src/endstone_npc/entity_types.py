@@ -82,3 +82,57 @@ def suggest(raw: str, n: int = 3) -> list[str]:
     """คืนรายชื่อ type ที่สะกดใกล้เคียงกับที่ผู้ใช้พิมพ์"""
     name = raw.strip().lower().removeprefix("minecraft:")
     return difflib.get_close_matches(name, ALL_TYPES + list(ALIASES), n=n, cutoff=0.5)
+
+
+# ชื่อ animation สั้น ๆ ที่แต่ละ NPC จาก addon มี (โหลดจาก animation json)
+NPC_ANIMATIONS: dict[str, list[str]] = {
+    "adventurer": ["idle", "alone", "greet", "fidget"],
+    "archer": ["idle", "alone", "greet", "fidget"],
+    "blacksmith": ["idle", "fidget", "alone", "greet"],
+    "butcher": ["idle", "alone", "fidget", "greet"],
+    "dworf": ["alone", "hi", "alone2"],
+    "farmer": ["idle", "fidget", "greet", "alone"],
+    "farmermaxvers": ["alone", "hi", "alone2"],
+    "guard": ["torch", "idle", "walk", "grabsword", "attack", "grabtorch"],
+    "guardcyan": ["torch", "idle", "walk", "grabsword", "attack", "grabtorch"],
+    "guardgreen": ["torch", "idle", "walk", "grabsword", "attack", "grabtorch"],
+    "guardorange": ["torch", "idle", "walk", "grabsword", "attack", "grabtorch"],
+    "guardparts": ["torch", "idle", "walk", "attack", "grabtorch"],
+    "guardpink": ["torch", "idle", "walk", "grabsword", "attack", "grabtorch"],
+    "guardpurple": ["torch", "idle", "walk", "grabsword", "attack", "grabtorch"],
+    "guardred": ["torch", "idle", "walk", "grabsword", "attack", "grabtorch"],
+    "guardyellow": ["torch", "idle", "walk", "grabsword", "attack", "grabtorch"],
+    "king": ["idle", "alone", "fidget", "greet"],
+    "kingdom_guardian": ["alone", "alone2", "interaction", "alone3"],
+    "mageshaman": ["alone", "hi", "alone2"],
+    "miner": ["idle", "alone", "greet", "fidget"],
+    "npc": ["look_at_target"],
+    "pirate": ["idle", "alone", "greet", "fidget"],
+    "tavern": ["idle", "alone", "greet", "fidget"],
+    "wizard": ["idle", "alone", "fidget", "greet"],
+}
+
+
+def get_npc_short_name(entity_type: str) -> str | None:
+    """ดึงชื่อสั้นจาก entity type เช่น 'npcp:adventurer' -> 'adventurer'"""
+    if ":" in entity_type:
+        ns, name = entity_type.split(":", 1)
+        if ns == "npcp":
+            return name
+    return None
+
+
+def get_available_animations(entity_type: str) -> list[str] | None:
+    """คืนรายชื่อ animation สั้นที่ entity type นี้มี, None ถ้าไม่ใช่ addon NPC"""
+    short = get_npc_short_name(entity_type)
+    if short is None:
+        return None
+    return NPC_ANIMATIONS.get(short)
+
+
+def get_animation_full_name(entity_type: str, action: str) -> str | None:
+    """สร้างชื่อ animation เต็ม เช่น ('npcp:adventurer', 'greet') -> 'animation.npcp_adventurer.greet'"""
+    short = get_npc_short_name(entity_type)
+    if short is None:
+        return None
+    return f"animation.npcp_{short}.{action}"

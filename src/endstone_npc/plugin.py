@@ -54,6 +54,7 @@ class NPCPlugin(Plugin):
                 # แยกเป็นสอง overload ที่ขึ้นต้น (command) เหมือนกันจะทำให้
                 # client ฟ้อง "Syntax error: Unexpected add"
                 "/npc (command)<npc_cmd: NpcCmd> (add|remove)<cmd_action: NpcCmdAction> <id: int> [cmd: message]",
+                "/npc (animations)<npc_anim: NpcAnim> (set|remove)<anim_action: NpcAnimAction> <id: int> [animation: str]",
             ],
             "permissions": ["npc_plugin.command.npc"],
         }
@@ -184,10 +185,21 @@ class NPCPlugin(Plugin):
             return
         self._last_interact[player.name] = now
 
+        anim_action = record.get("animation")
+        if anim_action:
+            full_name = entity_types.get_animation_full_name(record["type"], anim_action)
+            if full_name:
+                tag = NPCManager.tag_of(npc_id)
+                self.server.dispatch_command(
+                    self.server.command_sender,
+                    f"playanimation @e[tag={tag}] {full_name}",
+                )
+
         if not record["commands"]:
-            player.send_message(
-                f"{ColorFormat.YELLOW}NPC {record['name']} ยังไม่มี command ผูกไว้"
-            )
+            if not anim_action:
+                player.send_message(
+                    f"{ColorFormat.YELLOW}NPC {record['name']} ยังไม่มี command ผูกไว้"
+                )
             return
 
         for entry in record["commands"]:
@@ -230,6 +242,11 @@ class NPCPlugin(Plugin):
                     return self._cmd_command_add(sender, args)
                 if len(args) >= 2 and args[1] == "remove":
                     return self._cmd_command_remove(sender, args)
+            if action == "animations":
+                if len(args) >= 2 and args[1] == "set":
+                    return self._cmd_anim_set(sender, args)
+                if len(args) >= 2 and args[1] == "remove":
+                    return self._cmd_anim_remove(sender, args)
         except Exception as e:
             sender.send_error_message(f"เกิดข้อผิดพลาด: {e}")
             self.logger.error(f"/npc error: {e}")
@@ -371,6 +388,68 @@ class NPCPlugin(Plugin):
         sender.send_message(
             f"{ColorFormat.GREEN}ผูก command กับ NPC #{npc_id} แล้ว "
             f"(รันในนาม: {run_as}) — ตอนนี้มี {len(record['commands'])} command"
+        )
+        return True
+
+    def _cmd_anim_set(self, sender: CommandSender, args: list[str]) -> bool:
+        npc_id = int(args[2])
+        record = self._get_record(sender, npc_id)
+        if record is None:
+            return True
+
+        available = entity_types.get_available_animations(record["type"])
+        if available is None:
+            sender.send_error_message(
+                f"NPC #{npc_id} ({record['type']}) ไม่ใช่ NPC จาก addon — ไม่มี animation"
+            )
+            return True
+
+        if len(args) < 4 or not args[3].strip():
+            sender.send_message(
+                f"{ColorFormat.GOLD}=== animation ของ {record['name']} ({record['type']}) ==="
+            )
+            sender.send_message(f"{ColorFormat.WHITE}{', '.join(available)}")
+            current = record.get("animation")
+            if current:
+                sender.send_message(
+                    f"{ColorFormat.GRAY}ตอนนี้ใช้: {ColorFormat.GREEN}{current}"
+                )
+            sender.send_message(
+                f"{ColorFormat.GRAY}ใช้: /npc animations set {npc_id} <ชื่อ animation>"
+            )
+            return True
+
+        anim_name = args[3].strip().lower()
+        if anim_name not in available:
+            sender.send_error_message(
+                f"ไม่พบ animation '{anim_name}' — มีให้เลือก: {', '.join(available)}"
+            )
+            return True
+
+        record["animation"] = anim_name
+        self.manager.save()
+        sender.send_message(
+            f"{ColorFormat.GREEN}ตั้ง animation ของ NPC #{npc_id} เป็น '{anim_name}' แล้ว "
+            f"(เล่นเมื่อผู้เล่นคลิก)"
+        )
+        return True
+
+    def _cmd_anim_remove(self, sender: CommandSender, args: list[str]) -> bool:
+        npc_id = int(args[2])
+        record = self._get_record(sender, npc_id)
+        if record is None:
+            return True
+
+        if "animation" not in record:
+            sender.send_message(
+                f"{ColorFormat.YELLOW}NPC #{npc_id} ไม่มี animation ตั้งไว้อยู่แล้ว"
+            )
+            return True
+
+        del record["animation"]
+        self.manager.save()
+        sender.send_message(
+            f"{ColorFormat.GREEN}ลบ animation ของ NPC #{npc_id} แล้ว"
         )
         return True
 
