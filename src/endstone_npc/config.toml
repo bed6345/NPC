@@ -10,5 +10,8 @@ freeze_interval_ticks = 20
 # ของผู้เล่นคนเดิม
 interact_cooldown = 0.5
 
+# ระยะ (บล็อก) ที่ NPC จะหันหน้ามองผู้เล่นที่เข้าใกล้ (0 = ปิด)
+look_at_range = 3.0
+
 # log การคลิก/ตี NPC ลง console (ไว้ไล่ปัญหา) — เปิดเฉพาะตอนหาสาเหตุ
 debug = false
