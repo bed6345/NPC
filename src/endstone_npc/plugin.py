@@ -14,6 +14,7 @@
 # หมายเหตุ: ห้ามใส่ `from __future__ import annotations` ในไฟล์นี้!
 # มันทำให้ annotation ของ event handler กลายเป็น string แล้ว endstone
 # จะ register handler ไม่ได้ (error: invalid event handler signature)
+import os
 import time
 
 from endstone import ColorFormat, Player
@@ -55,6 +56,8 @@ class NPCPlugin(Plugin):
                 # client ฟ้อง "Syntax error: Unexpected add"
                 "/npc (command)<npc_cmd: NpcCmd> (add|remove)<cmd_action: NpcCmdAction> <id: int> [cmd: message]",
                 "/npc (animations)<npc_anim: NpcAnim> (set|remove)<anim_action: NpcAnimAction> <id: int> [animation: str]",
+                "/npc (look)<npc_look: NpcLook> <id: int> [range: float]",
+                "/npc (reload)<npc_reload: NpcReload>",
             ],
             "permissions": ["npc_plugin.command.npc"],
         }
@@ -85,6 +88,7 @@ class NPCPlugin(Plugin):
 
     def on_enable(self) -> None:
         self._load_config()
+        self._load_animations()
 
         self.manager = NPCManager(self)
         self.manager.load()
@@ -104,7 +108,8 @@ class NPCPlugin(Plugin):
 
         self.logger.info(
             f"NPCPlugin v1.2.0 เปิดใช้งานแล้ว "
-            f"(NPC ที่บันทึกไว้: {len(self.manager.npcs)} ตัว, debug={self.debug})"
+            f"(NPC ที่บันทึกไว้: {len(self.manager.npcs)} ตัว, "
+            f"animation types: {len(entity_types.NPC_ANIMATIONS)}, debug={self.debug})"
         )
 
     def on_disable(self) -> None:
@@ -124,6 +129,19 @@ class NPCPlugin(Plugin):
             self.debug = bool(cfg.get("debug", False))
         except Exception as e:
             self.logger.warning(f"อ่าน config.toml ไม่ได้ ใช้ค่า default แทน: {e}")
+
+    def _load_animations(self) -> int:
+        """โหลด npc_animations.json จาก data folder"""
+        path = os.path.join(self.data_folder, "npc_animations.json")
+        count = entity_types.load_animations(path)
+        if count >= 0:
+            self.logger.info(f"โหลด npc_animations.json ({count} types)")
+        else:
+            self.logger.info(
+                "ไม่พบ npc_animations.json — "
+                "วาง npc_animations.json ที่ plugins/NPCPlugin/ แล้วสั่ง /npc reload"
+            )
+        return count
 
     # ------------------------------------------------------------------
     # Events: ปกป้อง NPC — ห้ามโดนดาเมจ (ตีไม่ตาย) และห้ามกระเด็น
@@ -247,6 +265,10 @@ class NPCPlugin(Plugin):
                     return self._cmd_anim_set(sender, args)
                 if len(args) >= 2 and args[1] == "remove":
                     return self._cmd_anim_remove(sender, args)
+            if action == "look":
+                return self._cmd_look(sender, args)
+            if action == "reload":
+                return self._cmd_reload(sender)
         except Exception as e:
             sender.send_error_message(f"เกิดข้อผิดพลาด: {e}")
             self.logger.error(f"/npc error: {e}")
@@ -389,6 +411,57 @@ class NPCPlugin(Plugin):
             f"{ColorFormat.GREEN}ผูก command กับ NPC #{npc_id} แล้ว "
             f"(รันในนาม: {run_as}) — ตอนนี้มี {len(record['commands'])} command"
         )
+        return True
+
+    def _cmd_reload(self, sender: CommandSender) -> bool:
+        self._load_config()
+        count = self._load_animations()
+        if count >= 0:
+            sender.send_message(
+                f"{ColorFormat.GREEN}reload สำเร็จ — "
+                f"animation: {count} types, config อัพเดทแล้ว"
+            )
+        else:
+            sender.send_message(
+                f"{ColorFormat.YELLOW}reload config สำเร็จ — "
+                f"ไม่พบ npc_animations.json (วางไว้ที่ plugins/NPCPlugin/)"
+            )
+        return True
+
+    def _cmd_look(self, sender: CommandSender, args: list[str]) -> bool:
+        npc_id = int(args[1])
+        record = self._get_record(sender, npc_id)
+        if record is None:
+            return True
+
+        if len(args) >= 3 and args[2].strip():
+            range_val = float(args[2].strip())
+            if range_val <= 0:
+                record.pop("look_at", None)
+                self.manager.save()
+                sender.send_message(
+                    f"{ColorFormat.GREEN}ปิดการมองหน้าผู้เล่นของ NPC #{npc_id} แล้ว"
+                )
+            else:
+                record["look_at"] = range_val
+                self.manager.save()
+                sender.send_message(
+                    f"{ColorFormat.GREEN}NPC #{npc_id} จะหันหน้ามองผู้เล่นในระยะ {range_val} บล็อก"
+                )
+        else:
+            if "look_at" in record:
+                record.pop("look_at")
+                self.manager.save()
+                sender.send_message(
+                    f"{ColorFormat.GREEN}ปิดการมองหน้าผู้เล่นของ NPC #{npc_id} แล้ว"
+                )
+            else:
+                record["look_at"] = self.look_at_range
+                self.manager.save()
+                sender.send_message(
+                    f"{ColorFormat.GREEN}NPC #{npc_id} จะหันหน้ามองผู้เล่นในระยะ "
+                    f"{self.look_at_range} บล็อก"
+                )
         return True
 
     def _cmd_anim_set(self, sender: CommandSender, args: list[str]) -> bool:
