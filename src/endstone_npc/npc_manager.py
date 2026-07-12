@@ -319,16 +319,12 @@ class NPCManager:
         chunk_cache: dict = {}
         spawned_any = False
 
-        look_range = self.plugin.look_at_range
-        look_range_sq = look_range * look_range
-        players = list(self.plugin.server.online_players) if look_range > 0 else []
+        players = list(self.plugin.server.online_players)
 
         for key, record in self.npcs.items():
             npc_id = int(key)
             actor = found.get(npc_id)
 
-            # entity หาย (despawn/ตาย/ยังไม่ spawn หลัง restart) -> เกิดใหม่
-            # dedupe=False เพราะรอบนี้เพิ่งสแกนทั้งโลกยืนยันแล้วว่าไม่มีตัวค้าง
             if actor is None or actor.is_dead:
                 if self.spawn(npc_id, dedupe=False, chunk_cache=chunk_cache) is not None:
                     spawned_any = True
@@ -355,7 +351,9 @@ class NPCManager:
                 except Exception:
                     pass
 
-            if players:
+            look_range = record.get("look_at", 0)
+            if look_range > 0 and players:
+                look_range_sq = look_range * look_range
                 nearest = None
                 min_dsq = look_range_sq
                 nx, ny, nz = record["x"], record["y"], record["z"]
@@ -380,8 +378,6 @@ class NPCManager:
                         )
                 else:
                     actor.set_rotation(record["yaw"], record["pitch"])
-            else:
-                actor.set_rotation(record["yaw"], record["pitch"])
 
         # slowness กันเดิน: effect อยู่ได้ 60 วิ จึงยิงซ้ำแค่ทุก 40 รอบ (~40 วิ)
         # แต่ช่วง 3 รอบหลังมีตัว spawn ใหม่จะยิงทุกรอบ เพราะ selector

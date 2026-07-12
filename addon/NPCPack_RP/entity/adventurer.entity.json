@@ -14,7 +14,18 @@
    },
    "render_controllers": [
     "controller.render.npcp_npc"
-   ]
+   ],
+   "animations": {
+    "idle": "animation.npcp_adventurer.idle",
+    "alone": "animation.npcp_adventurer.alone",
+    "greet": "animation.npcp_adventurer.greet",
+    "fidget": "animation.npcp_adventurer.fidget"
+   },
+   "scripts": {
+    "animate": [
+     "idle"
+    ]
+   }
   }
  }
 }

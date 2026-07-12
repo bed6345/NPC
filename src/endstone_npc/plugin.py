@@ -56,6 +56,7 @@ class NPCPlugin(Plugin):
                 # client ฟ้อง "Syntax error: Unexpected add"
                 "/npc (command)<npc_cmd: NpcCmd> (add|remove)<cmd_action: NpcCmdAction> <id: int> [cmd: message]",
                 "/npc (animations)<npc_anim: NpcAnim> (set|remove)<anim_action: NpcAnimAction> <id: int> [animation: str]",
+                "/npc (look)<npc_look: NpcLook> <id: int> [range: float]",
                 "/npc (reload)<npc_reload: NpcReload>",
             ],
             "permissions": ["npc_plugin.command.npc"],
@@ -264,6 +265,8 @@ class NPCPlugin(Plugin):
                     return self._cmd_anim_set(sender, args)
                 if len(args) >= 2 and args[1] == "remove":
                     return self._cmd_anim_remove(sender, args)
+            if action == "look":
+                return self._cmd_look(sender, args)
             if action == "reload":
                 return self._cmd_reload(sender)
         except Exception as e:
@@ -423,6 +426,42 @@ class NPCPlugin(Plugin):
                 f"{ColorFormat.YELLOW}reload config สำเร็จ — "
                 f"ไม่พบ npc_animations.json (วางไว้ที่ plugins/NPCPlugin/)"
             )
+        return True
+
+    def _cmd_look(self, sender: CommandSender, args: list[str]) -> bool:
+        npc_id = int(args[1])
+        record = self._get_record(sender, npc_id)
+        if record is None:
+            return True
+
+        if len(args) >= 3 and args[2].strip():
+            range_val = float(args[2].strip())
+            if range_val <= 0:
+                record.pop("look_at", None)
+                self.manager.save()
+                sender.send_message(
+                    f"{ColorFormat.GREEN}ปิดการมองหน้าผู้เล่นของ NPC #{npc_id} แล้ว"
+                )
+            else:
+                record["look_at"] = range_val
+                self.manager.save()
+                sender.send_message(
+                    f"{ColorFormat.GREEN}NPC #{npc_id} จะหันหน้ามองผู้เล่นในระยะ {range_val} บล็อก"
+                )
+        else:
+            if "look_at" in record:
+                record.pop("look_at")
+                self.manager.save()
+                sender.send_message(
+                    f"{ColorFormat.GREEN}ปิดการมองหน้าผู้เล่นของ NPC #{npc_id} แล้ว"
+                )
+            else:
+                record["look_at"] = self.look_at_range
+                self.manager.save()
+                sender.send_message(
+                    f"{ColorFormat.GREEN}NPC #{npc_id} จะหันหน้ามองผู้เล่นในระยะ "
+                    f"{self.look_at_range} บล็อก"
+                )
         return True
 
     def _cmd_anim_set(self, sender: CommandSender, args: list[str]) -> bool:
